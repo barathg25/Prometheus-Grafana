@@ -34,9 +34,8 @@ helm install grafana grafana/grafana \
     --values /root/environment/grafana/grafana.yaml \
     --set service.type=NodePort
 
-ref: https://gist.github.com/ArunMagi/0249c48695c7cb86d9659ec3b46de4a6
-https://gist.github.com/barathg25/debed4838841be7eb61520968f8f8ff4
-<script src=".js"></script>
+ref: https://gist.github.com/barathg25/debed4838841be7eb61520968f8f8ff4
+
 
     ************************* pods and node cpu utlization *******************
     
