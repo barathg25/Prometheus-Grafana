@@ -22,9 +22,10 @@ Create pv for promethus
 kubectl apply -f pv.yaml
 
 helm install prometheus prometheus-community/prometheus \
---namespace monitoring \
---set alertmanager.persistentVolume.storageClass="local-storage" \
---set server.persistentVolume.storageClass="local-storage"
+  --namespace monitoring \
+  --set alertmanager.persistentVolume.storageClass="local-storage" \
+  --set server.persistentVolume.storageClass="local-storage"
+
 
 helm install grafana grafana/grafana \
     --namespace monitoring \
