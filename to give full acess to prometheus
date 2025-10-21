@@ -1,0 +1,46 @@
+let’s fix this step by step, from giving Prometheus full access to making Grafana dashboards show all metrics. I’ll assume your cluster has Prometheus installed via Helm in the monitoring namespace.
+
+Step 1: Create a ServiceAccount for Prometheus
+
+This ServiceAccount will be used by Prometheus to access the Kubernetes API and node metrics.
+
+kubectl create serviceaccount prometheus -n monitoring
+
+
+Check it:
+
+kubectl get sa -n monitoring
+
+
+You should see:
+
+NAME         SECRETS   AGE
+prometheus   1         1m
+
+Step 2: Give full cluster access
+
+We’ll bind the ServiceAccount to the cluster-admin role:
+
+kubectl create clusterrolebinding prometheus \
+  --clusterrole=cluster-admin \
+  --serviceaccount=monitoring:prometheus
+
+
+Verify the binding:
+
+kubectl get clusterrolebinding prometheus
+
+
+It should show cluster-admin bound to monitoring:prometheus.
+
+⚠️ Note: cluster-admin gives full access. Use only in trusted environments.
+
+Step 3: Make Prometheus use this ServiceAccount
+
+If you installed Prometheus via Helm, update it to use the new ServiceAccount:
+
+helm upgrade prometheus prometheus-community/prometheus \
+  --namespace monitoring \
+  --set server.serviceAccount.name=prometheus \
+  --set server.service.type=NodePort \
+  --set server.service.nodePort=30900
